@@ -1,0 +1,77 @@
+create table boat
+(
+bid varchar(6) primary key not null,
+bname varchar(20),
+colour varchar(10)
+);
+
+Table created.
+
+-->INSERT
+
+insert into boat('&bid','&bname','&colour');
+
+
+BID    BNAME		    COLOUR
+------ -------------------- ----------
+01     abc		    red
+02     xyz		    pink
+
+
+create table sailor
+(
+sid varchar(6)not null,
+sname varchar(20),
+age varchar(3),
+rating varchar(2),
+primary key(sid)
+);
+
+Table created.
+
+-->INSERT
+
+insert into sailor('&sid','&name','&age','&rating');
+
+select * from sailor;
+
+SID    SNAME		    AGE RA
+------ -------------------- --- --
+10     ram		    30	5
+20     ravi		    25	4
+
+
+3.reserves
+
+create table reserves
+(
+bid varchar(6),
+sid varchar(6),
+day varchar(10),
+foreign key(bid)references boat(bid)on delete cascade,
+foreign key(sid)references sailor(sid)on delete cascade
+);
+
+Table created.
+
+-->INSERT
+
+insert into reserves('&bid','&sid','&day');
+
+ select * from reserves;
+
+BID    SID    DAY
+------ ------ ----------
+01     20     monday
+02     10     tuesday
+
+
+>select bid from reserves
+ where sid IN(select sid from sailor
+		where INITCAP(sname)=Abc);
+
+>select bid from reserves r,sailor s
+ where r.sid=s.sid;
+
+>select count(bid),sid from reserves group by sid;
+

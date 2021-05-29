@@ -1,0 +1,75 @@
+create table emp
+(
+ssn varchar(6) primary key,
+name varchar(20),
+deptno int
+);
+
+
+create table assign
+(
+ssn varchar(6),
+pno int,
+foreign key(ssn)references emp(ssn) on delete cascade,
+foreign key(pno)references pro(pno) on delete cascade
+);
+
+insert into pro values(&projectno,'&projectarea');
+insert into assign values('&usn',&projectno);
+create table pro
+(
+projectno number(10) primary key,
+projectarea varchar(10),
+);
+
+INSERTION:
+
+SQL> insert into emp values(&ssn,'&name',&deptno);
+Enter value for ssn: 01
+Enter value for name: abc
+Enter value for deptno: 10
+old   1: insert into emp values(&ssn,'&name',&deptno)
+new   1: insert into emp values(01,'abc',10)
+
+1 row created.
+
+
+
+
+
+QUERIES:
+
+1--> SQL> select count(ssn),deptno from emp group by deptno;
+
+COUNT(SSN)     DEPTNO
+---------- ----------
+	 1	   30
+	 1	   20
+	 1	   40
+	 1	   10
+
+
+
+2--> SQL> select ssn from emp where ssn=(select usn from assign where projectno=(select projectno from pro  where projectarea='database'));
+
+SSN
+------
+1
+
+3--> SQL> update assign set projectno=200 where usn=3;
+
+1 row updated.
+
+SQL> select * from assign;
+
+USN    PROJECTNO
+------ ----------
+1      100
+2      200
+3      200
+1      200
+
+
+ select usn from assign
+  2  where projectno IN(select projectno from pro
+  3  where projectarea='db');

@@ -1,0 +1,91 @@
+>sqlplus/nolog
+>connect sys as sysdba
+//Write a PL/SQL program to check whether a given number is prime or not. 
+
+
+DECLARE
+	flag number:=1;
+	i number;
+	n number;
+BEGIN
+	n:=&num;
+	for i in 2..n/2 loop
+	  if mod(n,i)=0 then
+	     flag:=0;
+    	     exit;
+                 end if;
+	end loop;
+	if flag=0 then
+		dbms_output.put_line('Not prime');
+	else
+		dbms_output.put_line('prime');
+	end if;
+END;
+/
+
+// Write a program that gives all employees in Department #number a 15% pay increase. Display a message displaying how many employees were awarded the increase. 
+
+
+
+ BEGIN
+       UPDATE EMP
+       SET sal=(1.15*sal)+sal
+       where dept=10;
+       dbms_output.put_line('number of rows updated'||sql%rowcount);
+    END;
+    /
+
+
+
+// Write a PL/SQL procedure to print the first 8 Fibonacci numbers and a program to call the same. 
+
+
+DECLARE
+	a number;
+	b number;
+	c number;
+	n number;
+	i number;
+BEGIN
+	n:=8;
+	a:=0;
+	b:=1;
+	dbms_output.put_line(FIBO NUMBERS:);
+	dbms_output.put_line(a);
+	dbms_output.put_line(b);
+	for i in 1..n-2
+	loop
+	  c:=a+b;
+	  dbms_output.put_line(c);
+	  a:=b;
+	  b:=c;
+	end loop;
+END;
+/
+
+// Using cursors demonstrate the process of copying the contents of one table to a new table. 
+create table emp2(
+   ssn varchar(20),
+    name char(20),
+    deptno number(10),
+   salary int,
+  primary key(ssn));
+
+set serveroutput on
+ declare
+ 	cursor cur is select* from emp1;
+	counter int;
+	rows emp1%rowtype;
+begin
+	open cur;
+	loop
+	fetch cur into rows;
+	exit when cur%notfound;
+	insert into emp2 values(rows.ssn,rows.name,rows.deptno,rows.salary);
+	end loop;
+	counter:=cur%rowcount;
+	close cur;
+	dbms_output.put_line(counter||'rows inserted into table emp2');
+end;
+/
+
